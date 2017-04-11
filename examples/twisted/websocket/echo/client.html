@@ -37,6 +37,7 @@
 
          function sendText() {
             if (isopen) {
+               socket.send("This is a text from HTML");
                socket.send("Hello, world!");
                console.log("Text message sent.");               
             } else {

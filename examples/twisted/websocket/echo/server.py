@@ -23,12 +23,13 @@
 # THE SOFTWARE.
 #
 ###############################################################################
-
 from autobahn.twisted.websocket import WebSocketServerProtocol, \
     WebSocketServerFactory
 
 
 class MyServerProtocol(WebSocketServerProtocol):
+    def __init__(self):
+        self.userDict = {}
 
     def onConnect(self, request):
         print("Client connecting: {0}".format(request.peer))
@@ -48,7 +49,6 @@ class MyServerProtocol(WebSocketServerProtocol):
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {0}".format(reason))
 
-
 if __name__ == '__main__':
 
     import sys
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     from twisted.internet import reactor
 
     log.startLogging(sys.stdout)
-
+	
     factory = WebSocketServerFactory(u"ws://127.0.0.1:9000")
     factory.protocol = MyServerProtocol
     # factory.setProtocolOptions(maxConnections=2)
