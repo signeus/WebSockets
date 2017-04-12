@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from modules.services.interfaces.i_service import IService
 from modules.services.database.database_service import DBService
-from modules.services.service.log.collection import collection
+from modules.services.service.logs.collection import collection
 
 class LogService (IService):
     def __init__(self, core, parameters):

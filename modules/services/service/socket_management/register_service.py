@@ -6,5 +6,5 @@ class RegisterService (IService):
         super(RegisterService, self).__init__(core, parameters)
 
     def run(self):
-        self.core.send(self.parameters["new_client"], {"type":"message", "data":{"comuniacion":"Sockeado!"}})
+        self.core.send(self.parameters["new_client"], {"type":"message", "data":{"comunicacion":"Sockeado!"}})
         return "Register"
