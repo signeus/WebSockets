@@ -1,4 +1,4 @@
-from configs.interfaces.i_enviroment import IEnvironment
+from modules.configs.interfaces.i_enviroment import IEnvironment
 
 class Development(IEnvironment):
     def __init__(self):
@@ -7,7 +7,7 @@ class Development(IEnvironment):
                                 'ip_database':'127.0.0.1',
                                 'port_database':'27017',
                                 'name_database':'kayoo',
-                                'name_log_database': 'log_kayoo'
+                                'name_log_database': 'logKayoo'
                             }
 
     def config(self):

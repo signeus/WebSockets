@@ -1,5 +1,5 @@
 import socket
-from configs.interfaces.i_enviroment import IEnvironment
+from modules.configs.interfaces.i_enviroment import IEnvironment
 
 class Production(IEnvironment):
     def __init__(self):

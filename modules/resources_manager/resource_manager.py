@@ -1,5 +1,5 @@
 from resource_factory import ResourceFactory
-from configs.environment import env
+from modules.configs.environment import env
 
 class ResourceManager:
     def __init__(self, core):

@@ -1,7 +1,8 @@
 from autobahn.twisted.websocket import WebSocketServerFactory
-from modules.core.core import Core
 from modules.services.service_factory import ServiceFactory
 from modules.resources_manager.resource_manager import ResourceManager
+from django.utils.encoding import smart_str
+import json
 
 class Server(WebSocketServerFactory):
     def __init__(self, url):
@@ -20,7 +21,12 @@ class Server(WebSocketServerFactory):
 
             return serviceResult
         except Exception, ex:
-            print "------> " + ex + " Type: " + type(ex) + " <------"
+            print "------> "
+            print ex
+            print "Type: "
+            print type(ex)
+            print "<------"
+
             return {"result": 1, "data": {"message": ex.message, "error": 1, "type": 1}}
 
     def GetDatabaseResources(self):
@@ -29,32 +35,32 @@ class Server(WebSocketServerFactory):
         except Exception, ex:
             return ex.message
 
+    def GetClient(self, peer):
+        return self.clients[peer]
+
     ##End CORE##
 
     def register(self, client):
         if client.peer not in self.clients:
             self.clients[client.peer] = {"client": client}
-            result = self.FactoryOperation("register", {"clients":self.clients, "new_client":client.peer})
-            print "Registed client: {}".format(client.peer)
+            result = self.FactoryOperation("register", {"new_client":client})
             print result
+            print "Registed client: {}".format(client.peer)
 
     def unregister(self, client):
         if client.peer in self.clients:
             self.clients.pop(client.peer)
-            result = self.FactoryOperation("unregister", {"clients":self.clients, "pop_client":client.peer})
-            print "Unregisted client: {}".format(client.peer)
+            result = self.FactoryOperation("unregister", {"removed_client":client})
             print result
+            print "Unregisted client: {}".format(client.peer)
 
     def process_message(self, client, msg):
         try:
-
-            #m = json.loads(msg)
-            m = msg
-            if m["type"] == "connect":
-                return ""
-                # col.insert({"event": m["type"], "user_id": m["user"], "ts": datetime.datetime.now()})
-                # self.clients[client.peer]["user"] = {"id": m["user"]}
-                # print self.find_client(m["user"])
+            message = json.loads(msg)
+            print message
+            message.get("data",{})["client"] = client.peer
+            result = self.FactoryOperation(message.get("type"," "), message)
+            print result
                 # self.send(self.clients[client.peer]["client"], {"type": "message", "data": {"mesage": "hola"}})
         except Exception, ex:
             print "Websocket server error"
