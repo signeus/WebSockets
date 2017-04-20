@@ -10,7 +10,11 @@ class Production(IEnvironment):
                                 'port_database':'27017',
                                 'name_database':'kayoo',
                                 'name_log_database': 'log_kayoo',
-                                'ip_app': externalIp
+                                'ip_app': externalIp,
+                                'server_ldap': 'ldaps://[ip]:[port]',
+                                'baseDN_ldap': 'ou=[],dc=[],dc=[]',
+                                'user_ldap': 'uid=[],ou=[],ou=[],dc=[],dc=[]',
+                                'password_ldap': '[]'
                             }
 
     def config(self):

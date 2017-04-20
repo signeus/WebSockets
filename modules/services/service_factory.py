@@ -17,6 +17,13 @@ from modules.services.service.utils.read_time_service import ReadTimeService
 from modules.services.service.utils.activate_timer_service import ActivateTimerService
 from modules.services.service.utils.deactivate_timer_service import DeactivateTimerService
 
+#LDAP#
+from modules.services.service.ldap.ldap_connect_service import LdapConnectService
+from modules.services.service.ldap.ldap_find_service import LdapFindService
+
+#XLS#
+from modules.services.service.excel.read_xls_service import ReadXlsService
+
 class ServiceFactory (object):
     def __init__(self, core):
         self.core = core
@@ -33,7 +40,13 @@ class ServiceFactory (object):
             ##Utils##
             "readTime"                  : ReadTimeService,
             "activateTimer"             : ActivateTimerService,
-            "deactivateTimer"           : DeactivateTimerService
+            "deactivateTimer"           : DeactivateTimerService,
+            ##LDAP##
+            "connectLDAP"               : LdapConnectService,
+            "findInLDAP"                : LdapFindService,
+            # XLS #
+            "readXsl"                   : ReadXlsService
+
         }
 
     def getTask(self, serviceName, parameters):

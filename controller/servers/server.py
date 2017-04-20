@@ -1,7 +1,7 @@
 from autobahn.twisted.websocket import WebSocketServerFactory
 from modules.services.service_factory import ServiceFactory
 from modules.resources_manager.resource_manager import ResourceManager
-from django.utils.encoding import smart_str
+from caller import Caller
 import json
 
 class Server(WebSocketServerFactory):
@@ -14,26 +14,19 @@ class Server(WebSocketServerFactory):
     ##CORE##
 
     def FactoryOperation(self, serviceName, parameters, internalContext=False):
-        try:
-            serviceResult = self.serviceFactory.getTask(serviceName, parameters).run()
-            if not internalContext:
-                return {"data": serviceResult, "result": 0}
-
-            return serviceResult
-        except Exception, ex:
-            print "------> "
-            print ex
-            print "Type: "
-            print type(ex)
-            print "<------"
-
-            return {"result": 1, "data": {"message": ex.message, "error": 1, "type": 1}}
+        caller = Caller(self.serviceFactory, serviceName, parameters)
+        if internalContext:
+            return caller.call()
+        return caller.firstCall()
 
     def GetDatabaseResources(self):
         try:
             return self.rm.DatabaseManager()
         except Exception, ex:
             return ex.message
+
+    def GetResources(self):
+        return self.rm.ResourcesManager()
 
     def GetClient(self, peer):
         return self.clients[peer]
@@ -43,14 +36,14 @@ class Server(WebSocketServerFactory):
     def register(self, client):
         if client.peer not in self.clients:
             self.clients[client.peer] = {"client": client}
-            result = self.FactoryOperation("register", {"new_client":client})
+            result = self.FactoryOperation("register", {"new_client":client}, True)
             print result
             print "Registed client: {}".format(client.peer)
 
     def unregister(self, client):
         if client.peer in self.clients:
             self.clients.pop(client.peer)
-            result = self.FactoryOperation("unregister", {"removed_client":client})
+            result = self.FactoryOperation("unregister", {"removed_client":client}, True)
             print result
             print "Unregisted client: {}".format(client.peer)
 
@@ -59,7 +52,7 @@ class Server(WebSocketServerFactory):
             message = json.loads(msg)
             print message
             message.get("data",{})["client"] = client.peer
-            result = self.FactoryOperation(message.get("type"," "), message)
+            result = self.FactoryOperation(message.get("type"," "), message,  True)
             print result
                 # self.send(self.clients[client.peer]["client"], {"type": "message", "data": {"mesage": "hola"}})
         except Exception, ex:

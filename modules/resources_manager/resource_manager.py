@@ -9,5 +9,8 @@ class ResourceManager:
     def DatabaseManager(self):
         return self.ManagerOperation(self.environmentName)
 
+    def ResourcesManager(self):
+        return self.ManagerOperation(self.environmentName)
+
     def ManagerOperation(self, environmentName):
         return ResourceFactory(environmentName).config()
