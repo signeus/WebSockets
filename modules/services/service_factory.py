@@ -8,6 +8,7 @@ from modules.services.service.socket_management.unregister_service import Unregi
 from modules.services.service.actions.connect_service import ConnectService
 from modules.services.service.actions.new_post_service import NewPostService
 from modules.services.service.actions.read_post_service import ReadPostService
+from modules.services.service.actions.load_community_service import LoadCommunityService
 
 #Logs#
 from modules.services.service.logs.log_service import LogService
@@ -35,6 +36,7 @@ class ServiceFactory (object):
             "log"                       : LogService,
             # Actions#
             "connect"                   : ConnectService,
+            "loadCommunity"             : LoadCommunityService,
             "newPost"                   : NewPostService,
             "readPost"                  : ReadPostService,
             ##Utils##
