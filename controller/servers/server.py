@@ -50,10 +50,10 @@ class Server(WebSocketServerFactory):
     def process_message(self, client, msg):
         try:
             message = json.loads(msg)
-            print message
+            #print json.dumps(message)
             message.get("data",{})["client"] = client.peer
             result = self.FactoryOperation(message.get("type"," "), message,  True)
-            print result
+            print json.dumps(result)
                 # self.send(self.clients[client.peer]["client"], {"type": "message", "data": {"mesage": "hola"}})
         except Exception, ex:
             print "Websocket server error"
