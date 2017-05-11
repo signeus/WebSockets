@@ -10,6 +10,7 @@ from modules.services.service.actions.new_post_service import NewPostService
 from modules.services.service.actions.read_post_service import ReadPostService
 from modules.services.service.actions.load_community_service import LoadCommunityService
 from modules.services.service.actions.new_community_service import NewCommunityService
+from modules.services.service.actions.like_post_service import LikePostService
 
 #Logs#
 from modules.services.service.logs.log_service import LogService
@@ -43,6 +44,7 @@ class ServiceFactory (object):
             "newCommunity"              : NewCommunityService,
             "newPost"                   : NewPostService,
             "readPost"                  : ReadPostService,
+            "likePost"                  : LikePostService,
             ##Utils##
             "readTime"                  : ReadTimeService,
             "activateTimer"             : ActivateTimerService,

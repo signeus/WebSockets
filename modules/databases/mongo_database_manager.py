@@ -9,7 +9,11 @@ class MongoDatabaseManager:
 		return MongoDatabaseConnector(self.rm).getConnection()
 
 	def connect2Database(self):
-		return self.getConnection()[self.rm["name_database"]]
+		connection = self.getConnection()
+		connection.kayoo.authenticate(self.rm["user_database"], self.rm["psswd_database"], mechanism='SCRAM-SHA-1')
+		return connection[self.rm["name_database"]]
 
 	def connect2LogDatabase(self):
-		return self.getConnection()[self.rm["name_log_database"]]
+		connection = self.getConnection()
+		connection.kayooLog.authenticate(self.rm["user_log_database"], self.rm["psswd_log_database"], mechanism='SCRAM-SHA-1')
+		return connection[self.rm["name_log_database"]]
